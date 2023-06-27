@@ -6,7 +6,9 @@ import React from "react";
 //@ts-ignore
 import styled from "styled-components";
 import { GET_PRODUCTS } from "../../../apollo/queiries";
+import { Colors } from "../../../constants/colors";
 import { Category } from "../../../types/category";
+import Loader from "../../common/Loader";
 
 type Props = {
   category: Category;
@@ -18,28 +20,40 @@ const Category = ({ category }: Props) => {
       where: {
         categoryId: category?.id,
       },
+      take: 10,
+      skip: 0,
     },
     skip: !category?.id,
   });
+  console.log("🚀 ~ file: index.tsx ~ line 24 ~ Category ~ data", data);
 
   if (loading) {
-    return <div></div>;
+    return <Loader />;
   }
-  return data?.getProducts.length > 0 ? (
+  return data?.products?.count > 0 ? (
     <Container>
       <h2>{category?.name.toUpperCase()}</h2>
       <Grid container spacing={1} justifyContent="flex-start">
-        {data?.getProducts.map((product: any) => (
-          <Grid item key={product?.id} xs={12} sm={4} md={3} textAlign="center">
+        {data?.products.nodes.map((product: any) => (
+          <Grid
+            item
+            key={product?.id}
+            xs={12}
+            sm={4}
+            md={3}
+            lg={2}
+            textAlign="center"
+          >
             <Link href={`/products/${product?.id}`}>
               <ImageContainer>
                 <Image
-                  src={product?.image}
+                  src={product?.mainImage}
                   width={300}
                   height={300}
                   alt={product?.name}
                   layout="responsive"
                   objectFit="cover"
+                  objectPosition="top"
                 />
               </ImageContainer>
             </Link>
@@ -47,9 +61,7 @@ const Category = ({ category }: Props) => {
         ))}
       </Grid>
     </Container>
-  ) : (
-    <div></div>
-  );
+  ) : null;
 };
 
 const Container = styled.div`

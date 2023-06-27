@@ -45,6 +45,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { data } = await client.query({
     query: GET_PRODUCTS,
     variables: {
+      skip: 0,
+      take: 10,
       where: {
         name: context.query.search,
       },
@@ -52,7 +54,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   });
 
   return addApolloState(client, {
-    props: { products: data?.getProducts },
+    props: { products: data?.products?.nodes },
   });
 }
 

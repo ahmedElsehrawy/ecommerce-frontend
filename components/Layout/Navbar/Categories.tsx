@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import Link from "next/link";
 import React from "react";
 //@ts-ignore
@@ -35,15 +35,11 @@ const Categories = (props: Props) => {
 };
 
 const Container = styled.div`
-  width: 100%;
+  margin-bottom: 70px;
+  margin-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 const Category = styled.div`

@@ -11,4 +11,5 @@ export const Colors = {
   lightBrown: "#efe4ce",
   grayText: "#c2c2c2",
   cardColor: "#ffffffb3",
+  selected: "#d0d7de3d",
 };

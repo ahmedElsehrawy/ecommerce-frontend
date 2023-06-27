@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 //@ts-ignore
 import styled from "styled-components";
 import Category from "../components/Home/Category";
@@ -7,19 +7,24 @@ import OfferBanner from "../components/Home/offer";
 import { Colors } from "../constants/colors";
 import { addApolloState, initializeApollo } from "../apollo/client";
 import { Category as CategoryType } from "../types/category";
-import { CATEGORIES } from "../apollo/queiries";
+import { CATEGORIES, GET_PRODUCTS } from "../apollo/queiries";
+import Slider from "../components/common/Slider";
+import { Product } from "../types/product";
 
 interface Props {
   categories: CategoryType[];
+  products: Product[];
   count: number;
 }
 
 //@ts-ignore
 const Home: NextPage = (props: Props) => {
-  const { categories, count } = props;
+  const { categories, count, products } = props;
+  console.log("🚀 ~ file: index.tsx ~ line 23 ~ categories", categories);
   return (
     <ContentContainer>
       <Container>
+        <Slider products={products} />
         <OfferBanner />
         {categories?.map((category: any) => (
           <Category key={category?.id} category={category} />
@@ -34,9 +39,9 @@ const Container = styled.div`
   background-color: ${Colors.primary};
 `;
 
-export async function getServerSideProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const client = initializeApollo();
-  const { data } = await client.query({
+  const { data: categories } = await client.query({
     query: CATEGORIES,
     variables: {
       skip: 0,
@@ -44,12 +49,24 @@ export async function getServerSideProps() {
     },
   });
 
-  return addApolloState(client, {
-    props: {
-      categories: data?.categories?.nodes,
-      count: data?.categories?.count,
+  const { data } = await client.query({
+    query: GET_PRODUCTS,
+    variables: {
+      skip: 0,
+      take: 10,
+      where: {
+        categoryId: categories?.categories?.nodes[0].id,
+      },
     },
   });
-}
+
+  return addApolloState(client, {
+    props: {
+      categories: categories?.categories?.nodes,
+      count: categories?.categories?.count,
+      products: data?.products?.nodes,
+    },
+  });
+};
 
 export default Home;

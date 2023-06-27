@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Grid, Box, TextField, Button, FormLabel } from "@mui/material";
 //@ts-ignore
 import styled from "styled-components";
@@ -7,30 +7,36 @@ import { setAuthVar, storeAuth } from "../../utils/auth";
 import { Colors } from "../../constants/colors";
 import { useRouter } from "next/router";
 import { AuthVar, CartNumberVar } from "../../apollo/initialState";
-import { LOGIN } from "../../apollo/queiries";
+import { REGISTER } from "../../apollo/queiries";
 
 type Props = {};
 
-const Login = (props: Props) => {
+const Register = (props: Props) => {
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
 
-  const [login, { data, error }] = useMutation(LOGIN, {
+  const [register, { data, error }] = useMutation(REGISTER, {
     variables: {
       input: {
         email,
         password,
+        firstName,
+        lastName,
+        phone,
       },
     },
     onCompleted: async (data) => {
-      await setAuthVar(AuthVar, data?.login);
-      await storeAuth(data?.login);
-      CartNumberVar(data?.cart?.CartItem.length);
+      await setAuthVar(AuthVar, data?.register);
+      await storeAuth(data?.register);
+      CartNumberVar(data?.register?.cart?.CartItem.length);
       router.push("/");
     },
   });
-  console.log("🚀 ~ file: index.tsx ~ line 33 ~ Login ~ data", data);
+  console.log("🚀 ~ file: index.tsx ~ line 33 ~ register ~ data", data);
 
   return (
     <Grid container spacing={0}>
@@ -47,7 +53,7 @@ const Login = (props: Props) => {
             style={{ width: "80%" }}
             onSubmit={(e: any) => {
               e.preventDefault();
-              login();
+              register();
             }}
           >
             <FormItem>
@@ -72,8 +78,38 @@ const Login = (props: Props) => {
               />
             </FormItem>
             <FormItem>
+              <CustomLabel>Enter Your FirstName</CustomLabel>
+              <TextField
+                id="firstName"
+                size="small"
+                fullWidth
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </FormItem>
+            <FormItem>
+              <CustomLabel>Enter Your LastName</CustomLabel>
+              <TextField
+                id="lastName"
+                size="small"
+                fullWidth
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </FormItem>
+            <FormItem>
+              <CustomLabel>Enter Your Phone</CustomLabel>
+              <TextField
+                id="phone"
+                size="small"
+                fullWidth
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </FormItem>
+            <FormItem>
               <CustomButton fullWidth type="submit" variant="contained">
-                Sign In
+                Register
               </CustomButton>
             </FormItem>
           </Box>
@@ -124,4 +160,4 @@ const CustomLabel = styled(FormLabel)`
   color: ${Colors.secondary};
 `;
 
-export default Login;
+export default Register;

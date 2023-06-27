@@ -1,4 +1,4 @@
-import { ListAlt, Logout, PersonAdd, Settings } from "@mui/icons-material";
+import { ListAlt, Logout } from "@mui/icons-material";
 import {
   Menu,
   Avatar,
@@ -7,17 +7,25 @@ import {
   MenuItem,
   Tooltip,
   IconButton,
+  Badge,
 } from "@mui/material";
+import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+
 import { Box } from "@mui/system";
+import Link from "next/link";
 import { useRouter } from "next/router";
+
 import React from "react";
-import { AuthVar } from "../../../apollo/initialState";
+import { AuthVar, CartNumberVar } from "../../../apollo/initialState";
 import { removeAuth, resetAuthVar } from "../../../utils/auth";
+import { useReactiveVar } from "@apollo/client";
 
 type Props = {};
 
 const MenuList = (props: Props) => {
   const router = useRouter();
+  const cartItemsNumber = useReactiveVar(CartNumberVar);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: any) => {
@@ -30,6 +38,7 @@ const MenuList = (props: Props) => {
   const logout = async () => {
     await resetAuthVar(AuthVar);
     await removeAuth();
+    CartNumberVar(0);
     router.push("/");
   };
 
@@ -85,17 +94,42 @@ const MenuList = (props: Props) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
-          <Avatar /> Profile
-        </MenuItem>
-
+        <Link href="/profile">
+          <MenuItem>
+            <Avatar /> Profile
+          </MenuItem>
+        </Link>
         <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <ListAlt fontSize="small" />
-          </ListItemIcon>
-          Orders
-        </MenuItem>
+
+        <Link href="/orders">
+          <MenuItem>
+            <ListItemIcon>
+              <ListAlt fontSize="small" />
+            </ListItemIcon>
+            Orders
+          </MenuItem>
+        </Link>
+
+        <Link href="/cart">
+          <MenuItem>
+            <ListItemIcon>
+              <Badge badgeContent={cartItemsNumber} color="default">
+                <AddShoppingCartOutlinedIcon />
+              </Badge>
+            </ListItemIcon>
+            Cart
+          </MenuItem>
+        </Link>
+
+        <Link href="/favourites">
+          <MenuItem>
+            <ListItemIcon>
+              <FavoriteBorderOutlinedIcon />
+            </ListItemIcon>
+            Favourites
+          </MenuItem>
+        </Link>
+        <Divider />
 
         <MenuItem onClick={logout}>
           <ListItemIcon>

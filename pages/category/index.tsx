@@ -1,6 +1,5 @@
 import { Alert, Grid } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { useRouter } from "next/router";
 import React from "react";
 import { addApolloState, initializeApollo } from "../../apollo/client";
 import { GET_PRODUCTS } from "../../apollo/queiries";
@@ -49,12 +48,14 @@ export const getServerSideProps: GetServerSideProps = async (
         //@ts-ignore
         categoryId: +context.query.id,
       },
+      take: 10,
+      skip: 0,
     },
   });
 
   return addApolloState(client, {
     props: {
-      products: data?.getProducts,
+      products: data?.products?.nodes,
     },
   });
 };

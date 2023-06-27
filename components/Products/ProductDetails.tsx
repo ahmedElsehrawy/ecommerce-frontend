@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Rating } from "@mui/material";
 import React from "react";
 //@ts-ignore
 import styled from "styled-components";
@@ -10,6 +10,7 @@ interface Props {
   name: string;
   description: string;
   price: number;
+  averageRatingValue: number;
   category: {
     id: number;
     name: string;
@@ -17,10 +18,11 @@ interface Props {
 }
 
 const ProductDetails = (props: Props) => {
-  const { id, name, description, price, category } = props;
+  const { id, name, description, price, category, averageRatingValue } = props;
   return (
-    <Grid item xs={12} sm={6}>
+    <Grid item xs={12} sm={6} md={8}>
       <Title>{name}</Title>
+      <Rating name="read-only" value={averageRatingValue} readOnly />
       <Category>#{category.name}</Category>
       <Price>${price}</Price>
       <Description>{description}</Description>

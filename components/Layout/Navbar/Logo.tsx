@@ -20,12 +20,12 @@ const Logo = (props: Props) => {
 };
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   & div {
-    color: red;
+    color: #ffffff;
     font-size: 30px;
     font-style: italic;
     font-family: "Rubik Dirt", cursive;
@@ -34,6 +34,7 @@ const Container = styled.div`
   & span {
     font-size: 16px;
     font-style: italic;
+    color: red !important;
   }
 `;
 

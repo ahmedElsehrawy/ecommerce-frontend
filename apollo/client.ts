@@ -17,11 +17,6 @@ export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 //@ts-ignore
 const isServer = typeof widnow === "undefined";
 
-const httpLink = createHttpLink({
-  uri: endPoint,
-  credentials: "same-origin",
-});
-
 export const cache = new InMemoryCache({
   typePolicies: {
     Query: {
@@ -36,20 +31,32 @@ export const cache = new InMemoryCache({
   },
 });
 
-const authLink = setContext(() => {
-  let token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJlbHNlaHJhd3lAZ21haWwuY29tIiwicm9sZSI6IlZFTkRPUiIsImlhdCI6MTY2MDkxMDE5OCwiZXhwIjoxNjkyNDQ2MTk4fQ.HQ8THiQOu0USOlf0cVwBdZqcfD1qkpDEjKtzbiT-QfM";
-
-  return {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : "",
-    },
-  };
-});
-
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 export const createApolloClient = () => {
+  let token: string = "";
+
+  const httpLink = createHttpLink({
+    uri: endPoint,
+    credentials: "include",
+  });
+
+  const authLink = setContext((_, { headers }) => {
+    if (typeof window !== "undefined") {
+      const auth = localStorage.getItem("auth");
+      if (auth) {
+        token = JSON.parse(auth).token;
+      }
+    }
+
+    return {
+      headers: {
+        ...headers,
+        Authorization: token ? `Bearer ${token.replaceAll('"', "")}` : token,
+      },
+    };
+  });
+
   return new ApolloClient({
     ssrMode: isServer,
     link: authLink.concat(httpLink),

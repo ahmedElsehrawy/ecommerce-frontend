@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -10,20 +9,23 @@ import {
 import Link from "next/link";
 import React from "react";
 
-//@ts-ignore
 import { Colors } from "../../constants/colors";
+//@ts-ignore
+import styled from "styled-components";
 import { Product } from "../../types/product";
 import AddToCartButton from "./AddToCartButton";
 import RemoveFromCartButton from "./removeFromCartButton";
+import AddToFavouriteButton from "./AddToFavouriteButton";
 
 interface Props {
   product: Product;
   fromCart?: boolean;
   cartItemId?: number;
+  quantity?: number;
 }
 
 const ProductCard = (props: Props) => {
-  const { product, fromCart, cartItemId } = props;
+  const { product, fromCart, cartItemId, quantity } = props;
 
   return (
     <Card
@@ -31,12 +33,17 @@ const ProductCard = (props: Props) => {
         display: "flex",
         minHeight: 200,
         backgroundColor: Colors.cardColor,
+        position: "relative",
       }}
     >
       <CardMedia
         component="img"
-        sx={{ width: 151 }}
-        image={product.image}
+        sx={{
+          width: 151,
+          height: 200,
+          maxHeight: 200,
+        }}
+        image={product.mainImage}
         alt={product.name}
       />
       <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -47,7 +54,8 @@ const ProductCard = (props: Props) => {
               component="div"
               variant="h5"
             >
-              {product.name}
+              {product.name.substring(0, 12)}
+              {product.name.length > 12 && "..."}
             </Typography>
           </Link>
           <Typography
@@ -64,7 +72,8 @@ const ProductCard = (props: Props) => {
             component="p"
             sx={{ color: Colors.text }}
           >
-            {product.description}
+            {product.description.substring(0, 20)}
+            {product.description.length > 20 && "..."}
           </Typography>
         </CardContent>
         <CardActions>
@@ -73,10 +82,26 @@ const ProductCard = (props: Props) => {
           ) : (
             <AddToCartButton fullWidth={false} productId={product.id} />
           )}
+          <AddToFavouriteButton productId={product.id} />
         </CardActions>
       </Box>
+
+      {quantity && <Quantity>{quantity}</Quantity>}
     </Card>
   );
 };
+
+const Quantity = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  background-color: ${Colors.babyBlue};
+  color: ${Colors.white};
+  text-align: center;
+  border-radius: 50%;
+`;
 
 export default ProductCard;

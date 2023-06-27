@@ -22,4 +22,7 @@ const userInitialValue: Auth = {
   role: "CUSTOMER",
 };
 
+const initialCartNumber: number = 0;
+
 export const AuthVar = makeVar<Auth>(userInitialValue);
+export const CartNumberVar = makeVar<number>(initialCartNumber);

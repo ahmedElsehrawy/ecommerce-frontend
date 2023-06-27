@@ -4,6 +4,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 //@ts-ignore
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { Colors } from "../../../constants/colors";
 
 type Props = {};
 
@@ -16,7 +17,8 @@ const Search = (props: Props) => {
   return (
     <Container>
       <TextField
-        placeholder="search products"
+        sx={{ color: Colors.white }}
+        placeholder="search"
         variant="standard"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -29,8 +31,16 @@ const Search = (props: Props) => {
         }}
         InputProps={{
           startAdornment: (
-            <InputAdornment position="start">
-              <SearchOutlinedIcon />
+            <InputAdornment
+              position="start"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                if (search) {
+                  router.push(`/products?search=${search}`);
+                }
+              }}
+            >
+              <SearchOutlinedIcon sx={{ color: Colors.white }} />
             </InputAdornment>
           ),
         }}
@@ -41,16 +51,32 @@ const Search = (props: Props) => {
 
 const Container = styled.div`
   position: absolute;
-  right: 0;
-  top: 0;
-  margin-top: 12px;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 
-  @media screen and (max-width: 1024px) {
-    top: 50px;
-    left: 50%;
-    text-align: center;
-    transform: translateX(-50%);
-    margin-bottom: 20px;
+  & .css-1ptx2yq-MuiInputBase-root-MuiInput-root {
+    color: ${Colors.white};
+  }
+
+  & .css-1ptx2yq-MuiInputBase-root-MuiInput-root:before {
+    border-bottom: 1px solid ${Colors.grayText};
+    border-bottom: 0;
+  }
+
+  &
+    .css-1ptx2yq-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before {
+    border-bottom: 1px solid ${Colors.lightWhite};
+    border-bottom: 0;
+  }
+
+  & .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after {
+    border-bottom: 2px solid ${Colors.white};
+    border-bottom: 0;
+  }
+  @media screen and (max-width: 768px) {
+    width: 150px;
+    font-size: 10px;
   }
 `;
 
