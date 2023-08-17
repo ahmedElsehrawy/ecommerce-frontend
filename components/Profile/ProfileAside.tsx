@@ -2,6 +2,9 @@ import {
   AttachMoneyOutlined,
   InfoOutlined,
   ListAltOutlined,
+  LocalActivityOutlined,
+  LocationCityOutlined,
+  LocationOnOutlined,
   SettingsOutlined,
 } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
@@ -13,6 +16,8 @@ import { User } from "../../types/user";
 import Balance from "./Balance";
 import Info from "./Info";
 import Orders from "./Orders";
+import Settings from "./Settings";
+import Addresses from "./Addresses";
 
 interface Props {
   user: User;
@@ -30,6 +35,10 @@ const ProfileAside = (props: Props) => {
     { name: "info", icon: <InfoOutlined sx={{ fontSize: 20 }} /> },
     { name: "orders", icon: <ListAltOutlined sx={{ fontSize: 20 }} /> },
     { name: "balance", icon: <AttachMoneyOutlined sx={{ fontSize: 20 }} /> },
+    {
+      name: "add Address",
+      icon: <LocationOnOutlined sx={{ fontSize: 20 }} />,
+    },
     { name: "settings", icon: <SettingsOutlined sx={{ fontSize: 20 }} /> },
   ];
 
@@ -51,6 +60,10 @@ const ProfileAside = (props: Props) => {
 
       case "balance":
         return <Balance balance={user?.balance} />;
+      case "add Address":
+        return <Addresses />;
+      case "settings":
+        return <Settings />;
       default:
         break;
     }

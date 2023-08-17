@@ -48,23 +48,30 @@ export const getStaticProps: GetStaticProps = async () => {
       take: 4,
     },
   });
+  console.log(
+    "🚀 ~ file: index.tsx:51 ~ constgetStaticProps:GetStaticProps= ~ categories:",
+    categories
+  );
 
-  const { data } = await client.query({
-    query: GET_PRODUCTS,
-    variables: {
-      skip: 0,
-      take: 10,
-      where: {
-        categoryId: categories?.categories?.nodes[0].id,
+  let data = null;
+  if (categories?.categories?.nodes[0]) {
+    data = await client.query({
+      query: GET_PRODUCTS,
+      variables: {
+        skip: 0,
+        take: 10,
+        where: {
+          categoryId: categories?.categories?.nodes[0].id,
+        },
       },
-    },
-  });
-
+    });
+  }
+  console.log(data);
   return addApolloState(client, {
     props: {
       categories: categories?.categories?.nodes,
       count: categories?.categories?.count,
-      products: data?.products?.nodes,
+      products: data ? data?.data?.products?.nodes : null,
     },
   });
 };

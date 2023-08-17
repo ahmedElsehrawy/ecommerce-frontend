@@ -4,6 +4,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../apollo/client";
 import Layout from "../components/Layout";
 import { middleware } from "../utils/middlewares";
+import { ConfirmProvider } from "material-ui-confirm";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   console.log("🚀 ~ file: _app.tsx ~ line 8 ~ MyApp ~ router", router);
@@ -14,13 +15,13 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   }
 
   return (
-    <>
+    <ConfirmProvider>
       <ApolloProvider client={client}>
         <Layout>
           <Component {...pageProps} />
         </Layout>
       </ApolloProvider>
-    </>
+    </ConfirmProvider>
   );
 }
 

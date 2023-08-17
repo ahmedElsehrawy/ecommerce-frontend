@@ -76,14 +76,14 @@ const ProductCard = (props: Props) => {
             {product.description.length > 20 && "..."}
           </Typography>
         </CardContent>
-        <CardActions>
+        <StyledCardActions>
           {fromCart ? (
             <RemoveFromCartButton fullWidth={false} cartItemId={cartItemId} />
           ) : (
             <AddToCartButton fullWidth={false} productId={product.id} />
           )}
           <AddToFavouriteButton productId={product.id} />
-        </CardActions>
+        </StyledCardActions>
       </Box>
 
       {quantity && <Quantity>{quantity}</Quantity>}
@@ -102,6 +102,11 @@ const Quantity = styled.div`
   color: ${Colors.white};
   text-align: center;
   border-radius: 50%;
+`;
+
+const StyledCardActions = styled(CardActions)`
+  display: flex;
+  gap: 5px;
 `;
 
 export default ProductCard;

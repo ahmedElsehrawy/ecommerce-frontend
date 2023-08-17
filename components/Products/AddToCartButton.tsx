@@ -5,6 +5,9 @@ import { CartNumberVar } from "../../apollo/initialState";
 import { ADD_TO_CART, GET_CART } from "../../apollo/queiries";
 import { Colors } from "../../constants/colors";
 import { CartItem } from "../../types/cart";
+import useWindowSize from "../../utils/useWindowSize";
+import { Screens } from "../../constants/screens";
+import { PlusOneOutlined } from "@mui/icons-material";
 
 interface Props {
   fullWidth?: boolean;
@@ -14,6 +17,7 @@ interface Props {
 const AddToCartButton = (props: Props) => {
   const { fullWidth, productId } = props;
   const [open, setOpen] = useState<boolean>(false);
+  const size = useWindowSize();
 
   const handleClose = (
     event?: React.SyntheticEvent | Event,
@@ -97,7 +101,12 @@ const AddToCartButton = (props: Props) => {
           })
         }
       >
-        Add To Cart
+        {size.width == "undefined" && <span>Add To Cart</span>}
+        {size.width && size?.width < 500 ? (
+          <PlusOneOutlined />
+        ) : (
+          <span>Add To Cart</span>
+        )}
       </Button>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>

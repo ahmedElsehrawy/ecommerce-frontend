@@ -28,7 +28,7 @@ const CategoryPage = (props: Props) => {
     <ContentContainer>
       <Grid sx={{ paddingBottom: 20 }} container spacing={5}>
         {products.map((product: any) => (
-          <Grid key={product.id} item xs={12} md={6}>
+          <Grid key={product.id} item xs={12} md={6} lg={4} xl={3}>
             <ProductCard product={product} />
           </Grid>
         ))}

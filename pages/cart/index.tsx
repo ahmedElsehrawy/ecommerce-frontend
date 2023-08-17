@@ -34,7 +34,7 @@ const Cart = (props: Props) => {
           </Card>
           <Grid container spacing={5}>
             {data?.getCart?.CartItem.map((cartItem: CartItem) => (
-              <Grid item xs={12} md={6} lg={4} key={cartItem.id}>
+              <Grid item xs={12} md={6} lg={4} xl={3} key={cartItem.id}>
                 <ProductCard
                   fromCart={true}
                   product={cartItem.product}

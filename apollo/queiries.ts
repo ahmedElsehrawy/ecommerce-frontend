@@ -113,6 +113,16 @@ export const GET_PRODUCTS = gql`
         price
         discountId
         averageRatingValue
+        Comment {
+          id
+          commentText
+          createdAt
+          user {
+            id
+            firstName
+            lastName
+          }
+        }
       }
     }
   }
@@ -337,6 +347,26 @@ export const CREATE_RATING = gql`
       productId
       ratingValue
       userId
+    }
+  }
+`;
+
+export const DELETE_ADDRESS = gql`
+  mutation DeleteAddress($where: getUserWhereUniqueInput!) {
+    deleteAddress(where: $where) {
+      id
+    }
+  }
+`;
+
+export const GET_COMMENTS = gql`
+  query GetComments($where: getCommentsInput!) {
+    getComments(where: $where) {
+      id
+      commentText
+      commentOwnerId
+      createdAt
+      productId
     }
   }
 `;

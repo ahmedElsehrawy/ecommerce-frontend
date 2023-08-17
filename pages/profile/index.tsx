@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client";
 import React from "react";
-import { addApolloState, initializeApollo } from "../../apollo/client";
 import { ME } from "../../apollo/queiries";
 import Loader from "../../components/common/Loader";
 import ContentContainer from "../../components/Layout/ContentContainer";

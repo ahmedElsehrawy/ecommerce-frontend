@@ -38,10 +38,10 @@ const Category = ({ category }: Props) => {
           <Grid
             item
             key={product?.id}
-            xs={12}
-            sm={4}
-            md={3}
             lg={2}
+            md={3}
+            sm={4}
+            xs={12}
             textAlign="center"
           >
             <Link href={`/products/${product?.id}`}>

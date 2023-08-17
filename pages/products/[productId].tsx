@@ -10,6 +10,7 @@ interface Props {
 
 const Product = (props: Props) => {
   const { product } = props;
+  console.log("🚀 ~ file: [productId].tsx:13 ~ Product ~ product:", product);
 
   return <ProductPage product={product} />;
 };

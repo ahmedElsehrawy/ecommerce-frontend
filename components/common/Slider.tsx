@@ -15,6 +15,7 @@ import { Autoplay, Pagination, Navigation } from "swiper";
 import { Product } from "../../types/product";
 import Image from "next/image";
 import { Screens } from "../../constants/screens";
+import { Typography } from "@mui/material";
 
 interface Props {
   products: Product[];
@@ -38,26 +39,32 @@ const Slider = (props: Props) => {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        {products.map((product) => (
-          <SwiperSlide key={product.id}>
-            <Container>
-              <Image
-                src={product.mainImage}
-                alt={product.name}
-                height={1000}
-                width={2000}
-                layout="fill"
-                objectFit="contain"
-                style={{
-                  display: "block",
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-            </Container>
-          </SwiperSlide>
-        ))}
+        {products ? (
+          products.map((product) => (
+            <SwiperSlide key={product.id}>
+              <Container>
+                <Image
+                  src={product.mainImage}
+                  alt={product.name}
+                  height={1000}
+                  width={2000}
+                  layout="fill"
+                  objectFit="contain"
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Container>
+            </SwiperSlide>
+          ))
+        ) : (
+          <Center>
+            <Typography variant="h4">No Products Yet</Typography>
+          </Center>
+        )}
       </Swiper>
     </SwiperContainer>
   );
@@ -122,6 +129,10 @@ const Container = styled.div`
   @media screen and (max-width: ${Screens.xs}) {
     height: 240px;
   }
+`;
+
+const Center = styled.div`
+  text-align: center;
 `;
 
 export default Slider;

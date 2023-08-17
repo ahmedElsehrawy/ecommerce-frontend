@@ -19,9 +19,11 @@
     "deepmerge": "^4.2.2",
     "graphql": "^16.6.0",
     "lodash": "^4.17.21",
+    "material-ui-confirm": "^3.0.9",
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-popconfirm": "^0.1.1",
     "react-spinners": "^0.13.4",
     "styled-components": "^5.3.5",
     "swiper": "^8.3.2"

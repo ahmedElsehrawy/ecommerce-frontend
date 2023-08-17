@@ -24,7 +24,7 @@ const Favourites = (props: Props) => {
     <ContentContainer>
       <Grid sx={{ paddingBottom: 20 }} container spacing={5}>
         {data?.getFavourites.map((item: any) => (
-          <Grid key={item.id} item xs={12} md={6}>
+          <Grid key={item.id} item xs={12} md={6} lg={4} xl={3}>
             <ProductCard product={item.product} />
           </Grid>
         ))}

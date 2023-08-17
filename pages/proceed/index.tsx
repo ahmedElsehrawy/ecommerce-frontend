@@ -75,27 +75,7 @@ const Proceed = (props: Props) => {
       <Grid container spacing={5}>
         <Grid item xs={12} md={6}>
           <Grid container>
-            <Grid item xs={12} md={6}>
-              <FormControl fullWidth sx={{ marginBottom: 2 }}>
-                <InputLabel id="demo-simple-select-label">Address</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  //@ts-ignore
-                  value={address}
-                  label="Address"
-                  onChange={handleAddressChange}
-                >
-                  {addresses?.getUserAddresses?.map((address: Address) => (
-                    <MenuItem
-                      key={address.id}
-                      value={address.id}
-                    >{`${address.country},${address.city},${address.street}`}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12}>
               <FormControl fullWidth sx={{ marginBottom: 2 }}>
                 <InputLabel id="demo-simple-select-label">Address</InputLabel>
                 <Select
@@ -132,6 +112,31 @@ const Proceed = (props: Props) => {
               {/* <MenuItem key={address.id} value={address.id}></MenuItem> */}
             </Select>
           </FormControl>
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{ margin: "0 auto", marginTop: 4 }}
+            disabled={createOrderLoading || !address}
+            onClick={() => {
+              createOrder({
+                variables: {
+                  input: {
+                    addressId: address,
+                    userId: auth?.id,
+                    products: orderItems,
+                  },
+                },
+                onCompleted: (data) => {
+                  setLoader(true);
+                  CartNumberVar(0);
+                  router.push(`/orders/${data?.createOrder?.id}`);
+                },
+                refetchQueries: [{ query: GET_CART }],
+              });
+            }}
+          >
+            Order Now!
+          </Button>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card sx={{ padding: 2 }}>
@@ -158,31 +163,6 @@ const Proceed = (props: Props) => {
             </Typography>
           </Card>
         </Grid>
-        <Button
-          variant="outlined"
-          size="large"
-          sx={{ margin: "0 auto", marginTop: 4 }}
-          disabled={createOrderLoading || !address}
-          onClick={() => {
-            createOrder({
-              variables: {
-                input: {
-                  addressId: address,
-                  userId: auth?.id,
-                  products: orderItems,
-                },
-              },
-              onCompleted: (data) => {
-                setLoader(true);
-                CartNumberVar(0);
-                router.push(`/orders/${data?.createOrder?.id}`);
-              },
-              refetchQueries: [{ query: GET_CART }],
-            });
-          }}
-        >
-          Order Now!
-        </Button>
       </Grid>
     </ContentContainer>
   );
